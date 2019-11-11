@@ -1,8 +1,8 @@
 FROM nginx
 
-ENV BASE_DIR /app
+ENV SRV_DIR=/usr/share/nginx/html
 
-RUN mkdir -p ${BASE_DIR} \
+RUN mkdir -p ${SRV_DIR} \
     && rm -rf /etc/nginx/conf.d
 
 COPY nginx /etc/nginx
@@ -10,7 +10,7 @@ COPY entrypoint.sh /
 
 RUN nginx -t
 
-COPY src ${BASE_DIR}
+COPY src ${SRV_DIR}
 
 EXPOSE 80
 

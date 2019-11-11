@@ -6,21 +6,13 @@ echo "ENV at entrypoint:"
 env
 
 APP_ENV=${APP_ENV:-staging}
-APP_DIR=${BASE_DIR}/${APP_ENV}
-SRV_DIR=/usr/share/nginx/html
+APP_TAG=${APP_BUILD_TAG:-latest}
 
-if [ ! -d ${APP_DIR} ]; then
-  echo "Unable to find app dir: ${APP_DIR}"
-  exit 1
-fi
+NGINX_INSTALL_PATH=/etc/nginx
 
-if [ -d ${SRV_DIR} ]; then
-  echo "Found existing SRV_DIR: ${SRV_DIR}, removing it ..."
-  rm -rf ${SRV_DIR}
-fi
-
-ln -s ${APP_DIR} ${SRV_DIR}
-
-echo "SERVING FROM APP DIR: ${APP_DIR}"
+for html in $SRV_DIR/*.html; do
+  sed -i "s/PLACEHOLDER_APP_ENV/${APP_ENV}/g" "${html}"
+  sed -i "s/PLACEHOLDER_APP_TAG/${APP_TAG}/g" "${html}"
+done
 
 exec "$@"
