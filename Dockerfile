@@ -10,7 +10,7 @@ COPY entrypoint.sh /
 
 RUN nginx -t
 
-COPY src/* ${BASE_DIR}/
+COPY src ${BASE_DIR}
 
 EXPOSE 80
 

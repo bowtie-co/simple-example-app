@@ -10,7 +10,7 @@ APP_DIR=${BASE_DIR}/${APP_ENV}
 SRV_DIR=/usr/share/nginx/html
 
 if [ ! -d ${APP_DIR} ]; then
-  echo "Unable to location app dir: ${APP_DIR}"
+  echo "Unable to find app dir: ${APP_DIR}"
   exit 1
 fi
 
