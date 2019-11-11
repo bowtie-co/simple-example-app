@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+bin/run "echo pre-push"
+
+# bin/run "bin/lint"
+# Skip full test suite locally (too slow on some dev machines)
+# bin/run "bin/test"
+

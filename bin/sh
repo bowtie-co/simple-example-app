@@ -1,0 +1,3 @@
+#!/bin/bash
+
+bin/run "docker-compose run -l traefik.enable=false --rm example-app sh"

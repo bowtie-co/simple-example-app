@@ -1,0 +1,3 @@
+#!/bin/bash
+
+(which usac-dev > /dev/null) && (usac-dev start)
