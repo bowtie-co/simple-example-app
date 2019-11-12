@@ -1,0 +1,58 @@
+#!/bin/bash
+
+url=${1:-"http://127.0.0.1:8888"}
+interval=${2:-2}
+
+# COLORS! :)
+red='\033[0;31m'
+cyan='\033[0;36m'
+blue='\033[0;34m'
+yellow='\033[0;33m'
+nocolor='\033[0m'
+
+confirmYes() {
+  echo ""
+  msg="${1:-Are you sure?}"
+  read -r -p "${msg} [Y/n] " response
+  case "$response" in
+    [nN][oO]|[nN])
+      return 1
+      ;;
+    *)
+      return 0
+      ;;
+  esac
+}
+
+error() {
+  prefix="[ERROR] "
+  echo
+  echo -e "${red}${prefix}${1}${nocolor}"
+  echo
+}
+
+warn() {
+  prefix="[WARNING] "
+  echo
+  echo -e "${yellow}${prefix}${1}${nocolor}"
+  echo
+}
+
+log() {
+  prefix="[INFO] "
+  echo
+  echo -e "${cyan}${prefix}${1}${nocolor}"
+  echo
+}
+
+while true; do
+  bin/test $url
+
+  if [[ "$?" != "0" ]]; then
+    warn "Failed request! (not 200)"
+
+    curl -IL $url
+  fi
+
+  sleep $interval
+done
