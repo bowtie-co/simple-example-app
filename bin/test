@@ -1,3 +1,5 @@
 #!/bin/bash
 
-[[ "$(curl -Is http://127.0.0.1:8888 | head -n 1|cut -d$' ' -f2)" == "200" ]]
+url=${1:-"http://127.0.0.1:8888"}
+
+[[ "$(curl -Is $url | head -n 1|cut -d$' ' -f2)" == "200" ]]
