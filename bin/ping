@@ -45,13 +45,31 @@ log() {
   echo
 }
 
+status=0
+outage=0
+
 while true; do
   bin/test $url
 
   if [[ "$?" != "0" ]]; then
-    warn "Failed request! (not 200)"
+    outage=$(expr $outage + $interval)
 
-    curl -IL $url
+    if [[ "$status" != "0" ]]; then
+      warn "Still failing! (not 200)"
+    else
+      warn "Failed request! (not 200)"
+
+      curl -IL $url
+    fi
+
+    status=1
+  else
+    if [[ "$status" != "0" ]]; then
+      log "OUTAGE: $outage(s)"
+    fi
+
+    status=0
+    outage=0
   fi
 
   sleep $interval
