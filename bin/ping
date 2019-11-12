@@ -25,21 +25,24 @@ confirmYes() {
 }
 
 error() {
-  prefix="[ERROR] "
+  stamp=$(date)
+  prefix="${stamp} [ERROR] "
   echo
   echo -e "${red}${prefix}${1}${nocolor}"
   echo
 }
 
 warn() {
-  prefix="[WARNING] "
+  stamp=$(date)
+  prefix="${stamp} [WARNING] "
   echo
   echo -e "${yellow}${prefix}${1}${nocolor}"
   echo
 }
 
 log() {
-  prefix="[INFO] "
+  stamp=$(date)
+  prefix="${stamp} [INFO] "
   echo
   echo -e "${cyan}${prefix}${1}${nocolor}"
   echo
