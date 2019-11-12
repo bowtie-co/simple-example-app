@@ -51,8 +51,6 @@ while true; do
   if [[ "$?" != "0" ]]; then
     warn "Failed request! (not 200)"
 
-    date
-
     curl -IL $url
   fi
 
