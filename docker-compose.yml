@@ -7,8 +7,8 @@ services:
       - 8888:80
     networks:
       - proxy-network
-    volumes:
-      - './src:/app'
+    # volumes:
+    #   - './src:/app'
     labels:
       - "traefik.enable=true"
       - "traefik.frontend.headers.SSLRedirect=true"
