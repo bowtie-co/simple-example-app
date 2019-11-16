@@ -1,10 +1,13 @@
 FROM nginx
 
+ENV BIN_DIR=/scripts
 ENV SRV_DIR=/usr/share/nginx/html
 
-RUN mkdir -p ${SRV_DIR} \
+RUN mkdir -p ${BIN_DIR} \
+    && mkdir -p ${SRV_DIR} \
     && rm -rf /etc/nginx/conf.d
 
+COPY bin ${BIN_DIR}
 COPY nginx /etc/nginx
 COPY entrypoint.sh /
 
