@@ -1,0 +1,3 @@
+#!/bin/bash
+
+bin/run "echo \"Running migration ...\""
