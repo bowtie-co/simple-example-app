@@ -3,7 +3,8 @@ FROM nginx
 ENV BIN_DIR=/scripts
 ENV SRV_DIR=/usr/share/nginx/html
 
-RUN mkdir -p ${BIN_DIR} \
+RUN apt-get update && apt-get install -y curl \
+    && mkdir -p ${BIN_DIR} \
     && mkdir -p ${SRV_DIR} \
     && rm -rf /etc/nginx/conf.d
 
