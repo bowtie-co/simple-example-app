@@ -52,7 +52,11 @@ status=0
 outage=0
 
 while true; do
-  bin/test $url
+  if [ -d /scripts ] && [ -x /scripts/test ]; then
+    /scripts/test $url
+  else
+    bin/test $url
+  fi
 
   if [[ "$?" != "0" ]]; then
     outage=$(expr $outage + $interval)
