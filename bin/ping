@@ -1,12 +1,17 @@
 #!/bin/bash
 
-url=${1:-"http://127.0.0.1:8888"}
+default_protocol=${APP_PROTOCOL:-"http://"}
+default_host=${APP_HOST:-"127.0.0.1:8888"}
+default_url="${default_protocol}${default_host}"
+url=${1:-$default_url}
 interval=${2:-2}
+show_ok_every=30
 
 # COLORS! :)
 red='\033[0;31m'
 cyan='\033[0;36m'
 blue='\033[0;34m'
+green='\033[0;32m'
 yellow='\033[0;33m'
 nocolor='\033[0m'
 
@@ -40,6 +45,14 @@ warn() {
   echo
 }
 
+good() {
+  stamp=$(date)
+  prefix="${stamp} [GOOD] "
+  echo
+  echo -e "${green}${prefix}${1}${nocolor}"
+  echo
+}
+
 log() {
   stamp=$(date)
   prefix="${stamp} [INFO] "
@@ -50,6 +63,10 @@ log() {
 
 status=0
 outage=0
+running=0
+duration=0
+
+log "Running ping (${interval}s interval) on URL: '$url' ..."
 
 while true; do
   if [ -d /scripts ] && [ -x /scripts/test ]; then
@@ -58,21 +75,34 @@ while true; do
     bin/test $url
   fi
 
+
+
   if [[ "$?" != "0" ]]; then
     outage=$(expr $outage + $interval)
+    details="$url not returning 200 - Outage: ${outage}s - Duration: ${duration}s"
 
     if [[ "$status" != "0" ]]; then
-      warn "Still failing! (not 200)"
+      warn "Still failing! ($details)"
     else
-      warn "Failed request! (not 200)"
+      warn "Failed request! ($details)"
 
       curl -IL $url
     fi
 
     status=1
   else
+
     if [[ "$status" != "0" ]]; then
-      log "OUTAGE: $outage(s)"
+      running=0
+      log "Outage: ${outage}s ($url was down for $outage seconds - Duration: ${duration}s)"
+    else
+      show_ok=$(($duration % $show_ok_every))
+
+      if [[ $show_ok -lt $interval ]]; then
+        good "OK ($url returning 200 - Alive: ${running}s - Duration: ${duration}s)"
+      fi
+
+      running=$(expr $running + $interval)
     fi
 
     status=0
@@ -80,4 +110,6 @@ while true; do
   fi
 
   sleep $interval
+
+  duration=$(expr $duration + $interval)
 done
