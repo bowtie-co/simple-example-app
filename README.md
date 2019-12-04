@@ -1,20 +1,3 @@
-usac-example
+# usac-example
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Bowtie CI Demo Project
