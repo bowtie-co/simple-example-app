@@ -1,4 +1,3 @@
-# usac-example
+# simple-example-app
 
-Bowtie CI Demo Project
-
+Bowtie CI Example Project
